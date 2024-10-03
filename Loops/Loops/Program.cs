@@ -1,141 +1,180 @@
-﻿namespace Loops;
+Console.WriteLine("Tell me you employee data and i will tell you things");
 
-// *****************************
-// * მომხმარებლის კალათის ჯამი *
-// *****************************
-//
-// პროგრამა მომხმარებელს სთხოვს შეიყვანოს პროდუქტების დასახელება და ფასი.
-// ყველა შეყვანის შემდეგ პროგრამა მომხმარებელს ეკითხება სურს თუ არა გაგრძელება.
-// თუ მომხმარებელი შეიყვანს “yes” ან “y” პროგრამა გრძელდება და ითხოვოს მომდევნო პროდუქტის დასახელებისა და ფასის შეყვანას.
-// ბოლოს პროგრამა უნდა ბეჭდავს:
-//      * შეყვანილი პროდუქტების საერთო ღირებულებას
-//      * ყველაზე იაფიანი პროდუქტის დასახელებასა და ფასს
-//      * ყველაზე ძვირიანი პროდუქტის დასახელებასა და ფასს
 
-public class Program
+
+List<Employee> EmployeeData = new List<Employee>();
+
+
+string MoreEmployees = "";
+string MoreWorkedDays = "";
+
+decimal TotalSalary = 0;
+
+
+do
 {
-    public static void Main()
+    var employee = new Employee();
+
+    int WorkedDays = 1;
+
+    Console.WriteLine("Tell me employee name");
+    employee.EmployeeName = Console.ReadLine();
+
+    Console.WriteLine("Tell me employee hourly salary");
+    employee.EmployeeSalary = decimal.Parse(Console.ReadLine());
+
+
+    do
     {
-        var products = GetProductListFromConsole();
 
-        var totalPrice = CalculateTotalPrice(products);
-        Console.WriteLine($"Total price is: {totalPrice}");
 
-        var cheapestProduct = FindCheapestProduct(products);
-        Console.WriteLine($"Cheapest product is: {cheapestProduct.Name} --- {cheapestProduct.Price}");
 
-        var mostExpensiveProduct = FindTheMostExpensiveProduct(products);
-        Console.WriteLine($"Most expensive product is: {mostExpensiveProduct.Name} --- {mostExpensiveProduct.Price}");
-    }
+        Console.WriteLine($"Tell me workers day {WorkedDays} worked hours");
+        int WorkedHours = int.Parse(Console.ReadLine());
 
-    /// <summary>
-    /// პოულობს ყველაზე იაფ პროდუქტს
-    /// </summary>
-    private static Product FindCheapestProduct(List<Product> products)
-    {
-        // დავუშვათ რომ პირველივე პროდუქტი არის ყველაზე დაბალ ფასიანი
-        Product cheapestProduct = products[0];
-
-        // ავიღოთ თითოეული პროდუქტი პროდუქტების სიიდან.
-        // ათვლას ვიწყებთ მეორე პროდუქტიდან
-        for (int i = 1; i < products.Count; i++)
+        if (WorkedHours > 8)
         {
-            Product currentProduct = products[i];
+            int ExtraHours = 0;
 
-            // მიმდინარე პროდუქტის ფასს ვადარებთ ყველაზე დაბალ ფასიან პროდუქტს
-            if (currentProduct.Price < cheapestProduct.Price)
-            {
-                // თუ მიმდინარე პროდუქტის ფასი უფრო ნაკლებია ვიდრე ყველაზე დაბალ ფასიანი პროდუქტსი
-                // ეს იმას ნიშნავს რომ უფრო დაბალ ფასიანი პროდუქტი გვიპოვნია, ამიტომ
-                // ყველაზე დაბალ ფასიანი პროდუქტად ავირჩიოთ მიმდინარე პროდუქტი
-                cheapestProduct = currentProduct;
-            }
-        }
-        // ციკლის დასრულების შემდეგ cheapestProduct ობიექტი აღმოჩნდება ყველაზე დაბალფასიანი პროდუქტი
-        return cheapestProduct;
-    }
+            ExtraHours = WorkedHours - 8;
 
-    /// <summary>
-    /// პოულობს ყველაზე იაფ პროდუქტს
-    /// </summary>
-    private static Product FindTheMostExpensiveProduct(List<Product> products)
-    {
-        Product mostExpensiveProduct = products[0];
+            TotalSalary = (8 * employee.EmployeeSalary) + (ExtraHours * (employee.EmployeeSalary * 1.25m));
 
-        for (int i = 1; i < products.Count; i++)
-        {
-            Product currentProduct = products[i];
-            if (currentProduct.Price > mostExpensiveProduct.Price)
-            {
-                mostExpensiveProduct = currentProduct;
-            }
         }
 
-        return mostExpensiveProduct;
-    }
-
-    private static decimal CalculateTotalPrice(List<Product> products)
-    {
-        var totalPrice = 0m;
-        for (int i = 0; i < products.Count; i++)
+        else
         {
-            var product = products[i];
-            totalPrice += product.Price;
+
+            TotalSalary = WorkedHours * employee.EmployeeSalary;
+
         }
 
-        return totalPrice;
-    }
-
-    private static List<Product> GetProductListFromConsole()
-    {
-        var products = new List<Product>();
-        string retryCommand;
-        do
+        if (WorkedHours > 8)
         {
-            var product = CreateProduct();
-            products.Add(product);
-
-            // \n სიმბოლო გამოიყენება ტექსტის ახალი ხაზზე გადასატანად
-            Console.Write("\nEnter 'yes' or 'y' to continue: ");
-            retryCommand = Console.ReadLine();
-
-            // new string('-', 30) მოგვცემს ტექსტს რომელიც შევსებული იქნება 30 ცალი '-' სიმბოლოთი
-            Console.WriteLine(new string('-', 30));
-        } while (retryCommand == "yes" || retryCommand == "y");
-
-        return products;
-    }
-
-    private static Product CreateProduct()
-    {
-        var product = new Product();
-        product.Name = GetProductNameFromConsole();
-        product.Price = GetProductPriceFromConsole();
-
-        return product;
-    }
-
-    /// <summary>
-    /// აბრუნებს პროდუქტის ფასს რომელიც უნდა იყოს არაუარყოფითი რიცხვი
-    /// </summary>
-    private static decimal GetProductPriceFromConsole()
-    {
-        Console.Write("Enter Product price: ");
-        var price = decimal.Parse(Console.ReadLine());
-
-        // შევამოწმოთ შემოყვანილი ფასი უარყოფითი ხომ არ არის
-        if (price < 0)
-        {
-            // თუ ფასი უარყოფითია მაშინ დავაფიქსიროთ გამონაკლისი შემთხვევა (დავარყათ შეცდომა)
-            throw new Exception("price must be non negative number");
+            employee.WorkedOverTime = true;
         }
 
-        return price;
-    }
+        employee.OwedMoney = employee.OwedMoney + TotalSalary;
 
-    private static string GetProductNameFromConsole()
-    {
-        Console.Write("Enter Product Name: ");
-        return Console.ReadLine();
+        WorkedDays ++;
+
+        Console.WriteLine("Enter y if there are more worked days for this employee");
+        MoreWorkedDays = Console.ReadLine();
+
     }
+    while (MoreWorkedDays == "y");
+
+    EmployeeData.Add(employee);
+
+    Console.WriteLine("Enter y if there are more employees");
+    MoreEmployees = Console.ReadLine();
+
+} 
+
+while (MoreEmployees == "y");
+
+
+
+
+for (int i = 0; i < EmployeeData.Count; i++)
+{
+    var WriteData = EmployeeData[i];
+
+
+    Console.WriteLine("Here is employee name and how much you owe them");
+    Console.WriteLine(WriteData.EmployeeName);
+    Console.WriteLine(WriteData.OwedMoney);
 }
+
+for (int i = 0; i < EmployeeData.Count; i++)
+{
+
+    if (EmployeeData[i].WorkedOverTime == true)
+    {
+        Console.WriteLine("Here are employees who worked overtime and how much you owe them");
+        Console.WriteLine(EmployeeData[i].EmployeeName);
+        Console.WriteLine(EmployeeData[i].OwedMoney);
+    }
+
+}
+
+
+class Employee
+{
+
+    public string EmployeeName { get; set; }
+    public decimal EmployeeSalary { get; set; }
+    public decimal OwedMoney { get; set; }
+    public bool WorkedOverTime { get; set; }
+
+}
+
+
+
+//  Assignmnet 02
+
+
+
+Console.WriteLine("Tell me you employee data and i will tell you things");
+
+
+List<Product> ProductData = new List<Product>();
+
+
+string MoreProducts = "";
+
+
+do
+{
+    var product = new Product();
+
+
+    Console.WriteLine("Tell me product name");
+    product.ProductName = Console.ReadLine();
+
+    Console.WriteLine("Tell me product price");
+    product.ProductPrice = decimal.Parse(Console.ReadLine());
+
+    Console.WriteLine("Tell me product quantity");
+    product.ProductQuantity = int.Parse(Console.ReadLine());
+
+
+    ProductData.Add(product);
+
+    Console.WriteLine("Enter y if there are more products");
+    MoreProducts = Console.ReadLine();
+
+} 
+
+while (MoreProducts == "y");
+
+
+decimal TotalPrice = 0;
+
+for (int i = 0; i < ProductData.Count; i++)
+{
+
+    var WriteData = ProductData[i];
+
+
+    Console.WriteLine($"Here is totall price of {WriteData.ProductName} product");
+    decimal TotalProductPrice = WriteData.ProductPrice * WriteData.ProductQuantity;
+    Console.WriteLine(TotalProductPrice);
+
+    TotalPrice = TotalPrice + TotalProductPrice;
+
+}
+
+
+Console.WriteLine("Here is tatall price of all products");
+Console.WriteLine(TotalPrice);
+
+class Product
+{
+
+    public string ProductName { get; set; }
+    public decimal ProductPrice { get; set; }
+    public int ProductQuantity { get; set; }
+
+}
+
