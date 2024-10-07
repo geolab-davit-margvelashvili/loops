@@ -62,35 +62,82 @@ public static void Main(string[] args)
 
         //exercise 3
 
-        var productCost = new List<Exercise3weeks>();
-        decimal totalCost1 = 0;
+       var dateTime = DateTime.Now;
+var dayOfWeek = dateTime.DayOfWeek;
 
-        while (true)
+
+
+Console.WriteLine($"today is {dayOfWeek}");
+var productCost = new List <Exercise3weeks>();
+decimal totalCost1 = 0;
+
+
+while (true)
+{
+    Console.WriteLine(" enter product name ");
+    string name3 = Console.ReadLine();
+    if (string.IsNullOrEmpty(name3))
+    {
+        break;
+    }
+    decimal mondayCost,tuesdayCost,wednesdayCost,thursdayCost,fridayCost,saturdayCost;
+    mondayCost = 0;
+    tuesdayCost = 0;
+    wednesdayCost = 0;
+    thursdayCost = 0;
+    fridayCost = 0;
+    saturdayCost = 0;
+
+
+    switch (dayOfWeek)
+    {
+        case DayOfWeek.Monday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Monday} ");
+            mondayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Tuesday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Tuesday} ");
+            tuesdayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Wednesday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Wednesday} ");
+            wednesdayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Thursday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Thursday} ");
+            thursdayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Friday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Friday} ");
+            fridayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Saturday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Saturday} ");
+            saturdayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Sunday:
+            productCost.Add(new Exercise3weeks(name3,mondayCost,tuesdayCost,wednesdayCost,thursdayCost, fridayCost,saturdayCost));
+            break;
+    }
+
+
+
+    if (dayOfWeek == DayOfWeek.Sunday)
+    {
+
+       foreach (var item in productCost)
         {
-            Console.WriteLine(" enter product name ");
-            string name3 = Console.ReadLine();
-            if (string.IsNullOrEmpty(name3))
-            {
-                break;
-            }
-            Console.WriteLine("enter product cost from Monday Till Sunday ");
-            decimal monday = decimal.Parse(Console.ReadLine());
-            decimal tuesday = decimal.Parse(Console.ReadLine());
-            decimal wednesday = decimal.Parse(Console.ReadLine());
-            decimal thursday = decimal.Parse(Console.ReadLine());
-            decimal friday = decimal.Parse(Console.ReadLine());
-            decimal saturday = decimal.Parse(Console.ReadLine());
-
-
-            productCost.Add(new Exercise3weeks(name3, monday, tuesday, wednesday, thursday, friday, saturday));
+            totalCost1 = totalCost1 + item.TotalWeekCost;
+            
+            Console.WriteLine($"total cost calculated in {DayOfWeek.Sunday} is {totalCost1}");
         }
-        foreach (var item in productCost)
-        {
-            totalCost1 = totalCost1 + item.Sunday;
-        }
-
-        var sunday = DayOfWeek.Sunday;
-        Console.WriteLine($"total cost calculated in {sunday} is {totalCost1}");
+    }
 
 
     }
@@ -146,23 +193,23 @@ class Exercise2Product
 class Exercise3weeks
 {
     public string Name { get; set; }
-    public decimal Monday{ get; set; }
-    public decimal Tuesday { get; set; }
-    public decimal Wednesday { get; set; }
-    public decimal Thursday { get; set; }
-    public decimal Friday { get; set; }
-    public decimal Saturday { get; set; }
-    public decimal Sunday { get; set; }
+    public decimal MondayCost{ get; set; }
+    public decimal TuesdayCost { get; set; }
+    public decimal WednesdayCost { get; set; }
+    public decimal ThursdayCost { get; set; }
+    public decimal FridayCost { get; set; }
+    public decimal SaturdayCost { get; set; }
+    public decimal TotalWeekCost { get; set; }
 
     public Exercise3weeks(string name,decimal monday, decimal tuesday, decimal wednesday, decimal thursday, decimal fri, decimal sat)
     {
-        Monday = monday;
-        Tuesday = tuesday;
-        Wednesday = wednesday;
-        Thursday = thursday;
-        Friday = fri;
-        Saturday = sat;
-        Sunday = monday + tuesday + wednesday + thursday + fri + sat;
+        MondayCost = monday;
+        TuesdayCost = tuesday;
+        WednesdayCost = wednesday;
+        ThursdayCost = thursday;
+        FridayCost = fri;
+        SaturdayCost = sat;
+        TotalWeekCost = monday + tuesday + wednesday + thursday + fri + sat;
     }
 
    
