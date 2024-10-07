@@ -1,141 +1,218 @@
 ﻿namespace Loops;
+class Program
+{ 
+public static void Main(string[] args)
+    {
+        // exercise 1
+        var employees = new List<Exercise1Employee>();
 
-// *****************************
-// * მომხმარებლის კალათის ჯამი *
-// *****************************
-//
-// პროგრამა მომხმარებელს სთხოვს შეიყვანოს პროდუქტების დასახელება და ფასი.
-// ყველა შეყვანის შემდეგ პროგრამა მომხმარებელს ეკითხება სურს თუ არა გაგრძელება.
-// თუ მომხმარებელი შეიყვანს “yes” ან “y” პროგრამა გრძელდება და ითხოვოს მომდევნო პროდუქტის დასახელებისა და ფასის შეყვანას.
-// ბოლოს პროგრამა უნდა ბეჭდავს:
-//      * შეყვანილი პროდუქტების საერთო ღირებულებას
-//      * ყველაზე იაფიანი პროდუქტის დასახელებასა და ფასს
-//      * ყველაზე ძვირიანი პროდუქტის დასახელებასა და ფასს
+        while (true)
+        {
+            Console.WriteLine(" enter your name ");
+            string employeeName = Console.ReadLine();
+            if (string.IsNullOrEmpty(employeeName))
+            {
+                break;
+            }
+            Console.WriteLine(" enter your working days ");
+            int employeeWorkingDays = int.Parse(Console.ReadLine());
+            Console.WriteLine(" enter your overtime hours ");
+            int emplyeeTotalOvertimeHours = int.Parse(Console.ReadLine());
 
-public class Program
+            employees.Add(new Exercise1Employee(employeeName, employeeWorkingDays, emplyeeTotalOvertimeHours));
+        }
+
+        foreach (var employee in employees)
+        {
+            Console.WriteLine(employee.Name);
+            employee.EarnedSalary();
+        }
+        
+        //exercise 2
+
+        var products = new List<Exercise2Product>();
+        decimal totalCost = 0;
+
+        while (true)
+        {
+            Console.WriteLine(" enter product name ");
+            string name2 = Console.ReadLine();
+            if (string.IsNullOrEmpty(name2))
+            {
+                break;
+            }
+
+            Console.WriteLine(" enter product price ");
+            decimal price = decimal.Parse(Console.ReadLine());
+
+            Console.WriteLine(" enter product number ");
+            int number = int.Parse(Console.ReadLine());
+            products.Add(new Exercise2Product(name2, price, number));
+        }
+
+        foreach (var product in products)
+        {
+            Console.WriteLine($" your {product.Name} costed  ");
+            Console.WriteLine(product.ProductCost);
+            Console.WriteLine();
+            totalCost = totalCost + product.ProductCost;
+        }
+
+        Console.WriteLine($"total cost of all products is {totalCost} ");
+
+        //exercise 3
+
+       var dateTime = DateTime.Now;
+var dayOfWeek = dateTime.DayOfWeek;
+
+
+
+Console.WriteLine($"today is {dayOfWeek}");
+var productCost = new List <Exercise3weeks>();
+decimal totalCost1 = 0;
+
+
+while (true)
 {
-    public static void Main()
+    Console.WriteLine(" enter product name ");
+    string name3 = Console.ReadLine();
+    if (string.IsNullOrEmpty(name3))
     {
-        var products = GetProductListFromConsole();
+        break;
+    }
+    decimal mondayCost,tuesdayCost,wednesdayCost,thursdayCost,fridayCost,saturdayCost;
+    mondayCost = 0;
+    tuesdayCost = 0;
+    wednesdayCost = 0;
+    thursdayCost = 0;
+    fridayCost = 0;
+    saturdayCost = 0;
 
-        var totalPrice = CalculateTotalPrice(products);
-        Console.WriteLine($"Total price is: {totalPrice}");
 
-        var cheapestProduct = FindCheapestProduct(products);
-        Console.WriteLine($"Cheapest product is: {cheapestProduct.Name} --- {cheapestProduct.Price}");
+    switch (dayOfWeek)
+    {
+        case DayOfWeek.Monday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Monday} ");
+            mondayCost = decimal.Parse(Console.ReadLine());
+            break;
 
-        var mostExpensiveProduct = FindTheMostExpensiveProduct(products);
-        Console.WriteLine($"Most expensive product is: {mostExpensiveProduct.Name} --- {mostExpensiveProduct.Price}");
+        case DayOfWeek.Tuesday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Tuesday} ");
+            tuesdayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Wednesday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Wednesday} ");
+            wednesdayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Thursday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Thursday} ");
+            thursdayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Friday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Friday} ");
+            fridayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Saturday:
+            Console.WriteLine($"enter product cost in {DayOfWeek.Saturday} ");
+            saturdayCost = decimal.Parse(Console.ReadLine());
+            break;
+
+        case DayOfWeek.Sunday:
+            productCost.Add(new Exercise3weeks(name3,mondayCost,tuesdayCost,wednesdayCost,thursdayCost, fridayCost,saturdayCost));
+            break;
     }
 
-    /// <summary>
-    /// პოულობს ყველაზე იაფ პროდუქტს
-    /// </summary>
-    private static Product FindCheapestProduct(List<Product> products)
+
+
+    if (dayOfWeek == DayOfWeek.Sunday)
     {
-        // დავუშვათ რომ პირველივე პროდუქტი არის ყველაზე დაბალ ფასიანი
-        Product cheapestProduct = products[0];
 
-        // ავიღოთ თითოეული პროდუქტი პროდუქტების სიიდან.
-        // ათვლას ვიწყებთ მეორე პროდუქტიდან
-        for (int i = 1; i < products.Count; i++)
+       foreach (var item in productCost)
         {
-            Product currentProduct = products[i];
-
-            // მიმდინარე პროდუქტის ფასს ვადარებთ ყველაზე დაბალ ფასიან პროდუქტს
-            if (currentProduct.Price < cheapestProduct.Price)
-            {
-                // თუ მიმდინარე პროდუქტის ფასი უფრო ნაკლებია ვიდრე ყველაზე დაბალ ფასიანი პროდუქტსი
-                // ეს იმას ნიშნავს რომ უფრო დაბალ ფასიანი პროდუქტი გვიპოვნია, ამიტომ
-                // ყველაზე დაბალ ფასიანი პროდუქტად ავირჩიოთ მიმდინარე პროდუქტი
-                cheapestProduct = currentProduct;
-            }
+            totalCost1 = totalCost1 + item.TotalWeekCost;
+            
+            Console.WriteLine($"total cost calculated in {DayOfWeek.Sunday} is {totalCost1}");
         }
-        // ციკლის დასრულების შემდეგ cheapestProduct ობიექტი აღმოჩნდება ყველაზე დაბალფასიანი პროდუქტი
-        return cheapestProduct;
     }
 
-    /// <summary>
-    /// პოულობს ყველაზე იაფ პროდუქტს
-    /// </summary>
-    private static Product FindTheMostExpensiveProduct(List<Product> products)
-    {
-        Product mostExpensiveProduct = products[0];
 
-        for (int i = 1; i < products.Count; i++)
-        {
-            Product currentProduct = products[i];
-            if (currentProduct.Price > mostExpensiveProduct.Price)
-            {
-                mostExpensiveProduct = currentProduct;
-            }
-        }
-
-        return mostExpensiveProduct;
     }
 
-    private static decimal CalculateTotalPrice(List<Product> products)
-    {
-        var totalPrice = 0m;
-        for (int i = 0; i < products.Count; i++)
-        {
-            var product = products[i];
-            totalPrice += product.Price;
-        }
 
-        return totalPrice;
-    }
-
-    private static List<Product> GetProductListFromConsole()
-    {
-        var products = new List<Product>();
-        string retryCommand;
-        do
-        {
-            var product = CreateProduct();
-            products.Add(product);
-
-            // \n სიმბოლო გამოიყენება ტექსტის ახალი ხაზზე გადასატანად
-            Console.Write("\nEnter 'yes' or 'y' to continue: ");
-            retryCommand = Console.ReadLine();
-
-            // new string('-', 30) მოგვცემს ტექსტს რომელიც შევსებული იქნება 30 ცალი '-' სიმბოლოთი
-            Console.WriteLine(new string('-', 30));
-        } while (retryCommand == "yes" || retryCommand == "y");
-
-        return products;
-    }
-
-    private static Product CreateProduct()
-    {
-        var product = new Product();
-        product.Name = GetProductNameFromConsole();
-        product.Price = GetProductPriceFromConsole();
-
-        return product;
-    }
-
-    /// <summary>
-    /// აბრუნებს პროდუქტის ფასს რომელიც უნდა იყოს არაუარყოფითი რიცხვი
-    /// </summary>
-    private static decimal GetProductPriceFromConsole()
-    {
-        Console.Write("Enter Product price: ");
-        var price = decimal.Parse(Console.ReadLine());
-
-        // შევამოწმოთ შემოყვანილი ფასი უარყოფითი ხომ არ არის
-        if (price < 0)
-        {
-            // თუ ფასი უარყოფითია მაშინ დავაფიქსიროთ გამონაკლისი შემთხვევა (დავარყათ შეცდომა)
-            throw new Exception("price must be non negative number");
-        }
-
-        return price;
-    }
-
-    private static string GetProductNameFromConsole()
-    {
-        Console.Write("Enter Product Name: ");
-        return Console.ReadLine();
-    }
 }
+
+class Exercise1Employee
+{
+    public string Name { get; set; }
+    
+    public int WorkingDays { get; set; }
+    
+    public const int WorkingHoursInDay = 8;
+    public int WorkingOvertimeHoursInMonth { get;set; }
+
+    public const decimal HourlySalary = 20m;
+    public const decimal OvertimeHourlySalary = 25m;
+
+    public Exercise1Employee(string name, int workingDays,int overTimeHoursInMonth)
+    {
+        Name = name;
+        WorkingDays = workingDays;
+        WorkingOvertimeHoursInMonth = overTimeHoursInMonth;
+    }
+
+    public void EarnedSalary()
+    {
+        decimal earnedSalary = WorkingDays * (WorkingHoursInDay * HourlySalary) + (WorkingOvertimeHoursInMonth * OvertimeHourlySalary);
+        Console.WriteLine($" your earned total salary is : {earnedSalary} Lari ");
+        Console.WriteLine();
+    }
+
+}
+
+class Exercise2Product
+{
+    public string Name { get; set; }
+    public decimal Price { get; set;}
+    public int ProductNumber { get; set;}
+    public decimal ProductCost {  get; set;}
+
+    public Exercise2Product(string name, decimal price, int productNumber)
+    {
+        Name = name;
+        Price = price;
+        ProductNumber = productNumber;
+        ProductCost = price * productNumber;
+    }
+
+    
+}
+class Exercise3weeks
+{
+    public string Name { get; set; }
+    public decimal MondayCost{ get; set; }
+    public decimal TuesdayCost { get; set; }
+    public decimal WednesdayCost { get; set; }
+    public decimal ThursdayCost { get; set; }
+    public decimal FridayCost { get; set; }
+    public decimal SaturdayCost { get; set; }
+    public decimal TotalWeekCost { get; set; }
+
+    public Exercise3weeks(string name,decimal monday, decimal tuesday, decimal wednesday, decimal thursday, decimal fri, decimal sat)
+    {
+        MondayCost = monday;
+        TuesdayCost = tuesday;
+        WednesdayCost = wednesday;
+        ThursdayCost = thursday;
+        FridayCost = fri;
+        SaturdayCost = sat;
+        TotalWeekCost = monday + tuesday + wednesday + thursday + fri + sat;
+    }
+
+   
+}
+
+
